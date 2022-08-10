@@ -1,14 +1,24 @@
 import torch
 from torch.utils.data import Dataset
+import fsspec
+from dataclasses import dataclass
 
 """
 Adapted from https://github.com/karpathy/minGPT/blob/master/projects/chargpt/chargpt.py
 """
 
+@dataclass
+class DataConfig:
+    path: str = None
+    block_size: int = None
+    train_split: float = None
+    truncate: float = 1.0
+
 class CharDataset(Dataset):
 
-    def __init__(self, data_path: str, block_size):
-        data = open(data_path, 'r').read()
+    def __init__(self, data_cfg: DataConfig): #data_path: str, block_size):
+        data = fsspec.open(data_cfg.path).open().read()
+        data = data[ : int(len(data) * data_cfg.truncate)]
 
         chars = sorted(list(set(data)))
         data_size, vocab_size = len(data), len(chars)
@@ -16,7 +26,7 @@ class CharDataset(Dataset):
 
         self.stoi = {ch: i for i, ch in enumerate(chars)}
         self.itos = {i: ch for i, ch in enumerate(chars)}
-        self.block_size = block_size
+        self.block_size = data_cfg.block_size
         self.vocab_size = vocab_size
         self.data = data
 
