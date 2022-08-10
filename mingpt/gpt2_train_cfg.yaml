@@ -1,5 +1,5 @@
-data:
-  path: ./data/input.txt
+data_config:
+  path: /home/ec2-user/subramen/minGPT-ddp/mingpt/data/input.txt
   block_size: 128
   train_split: 0.9
 gpt_config:
@@ -16,3 +16,7 @@ trainer_config:
 optimizer_config:
   weight_decay: 0.1
   learning_rate: 0.0003
+
+hydra:
+  run:
+    dir: ./
