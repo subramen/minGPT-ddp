@@ -1,4 +1,4 @@
-data:
+data_config:
   path: ./data/input.txt
   block_size: 128
   train_split: 0.9

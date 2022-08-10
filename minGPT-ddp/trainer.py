@@ -16,12 +16,13 @@ from torch.utils.data.distributed import DistributedSampler
 
 @dataclass
 class TrainerConfig:
-    job_name: str
+    # job_name: str
     max_epochs: int = None
     batch_size: int = None
-    data_loader_workers: int = 4
-    grad_norm_clip: float = 1.0
+    data_loader_workers: int = None
+    grad_norm_clip: float = None
     snapshot_path: Optional[str] = None
+    save_every: int = None
     # enable_profile: bool = False
     # log_dir: Optional[str] = None
 
@@ -34,6 +35,7 @@ class Snapshot:
 class Trainer:
 
     def __init__(self, trainer_config, model, optimizer, train_dataset, test_dataset=None):
+        self.config = trainer_config
         # set torchrun variables
         self.local_rank = int(os.environ["LOCAL_RANK"])
         self.global_rank = int(os.environ["RANK"])  
@@ -45,10 +47,9 @@ class Trainer:
         self.epochs_run = 0
         self.model = model.to(self.local_rank)
         self.optimizer = optimizer        
-        self.config = trainer_config
-        self.save_every = trainer_config.save_every
+        self.save_every = self.config.save_every
         # load snapshot if available
-        self._load_snapshot(trainer_config.snapshot_path)
+        self._load_snapshot(self.config.snapshot_path)
         # wrap with DDP
         self.model = DDP(self.model, device_ids=[self.local_rank])
         
