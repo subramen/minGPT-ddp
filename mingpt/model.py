@@ -150,6 +150,7 @@ class GPT(nn.Module):
                 'gpt-micro':    dict(n_layer=4, n_head=4, n_embd=128),
                 'gpt-nano':     dict(n_layer=3, n_head=3, n_embd=48),
             }[config.model_type])
+        print(config)
         return config
     
     def _init_weights(self, module):
@@ -230,14 +231,8 @@ def create_optimizer(model: torch.nn.Module, opt_config: OptimizerConfig):
             elif pn.endswith('weight') and isinstance(m, whitelist_weight_modules):
                 # weights of whitelist modules will be weight decayed
                 decay.add(fpn)
-            elif pn.endswith('in_proj_weight'):
-                # MHA projection layer
-                decay.add(fpn)
             elif pn.endswith('weight') and isinstance(m, blacklist_weight_modules):
                 # weights of blacklist modules will NOT be weight decayed
-                no_decay.add(fpn)
-            elif pn.endswith('pos_emb'):
-                # positional embedding shouldn't be decayed
                 no_decay.add(fpn)
 
     # validate that we considered every parameter

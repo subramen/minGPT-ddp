@@ -9,7 +9,7 @@ from torch.distributed import init_process_group, destroy_process_group
 def ddp_setup():
     init_process_group(backend="nccl")
 
-def get_train_objs(gpt_cfg: GPTConfig, opt_cfg: OptimizerConfig, data_cfg: DictConfig):
+def get_train_objs(gpt_cfg: GPTConfig, opt_cfg: OptimizerConfig, data_cfg):
     dataset = CharDataset(data_cfg.path, data_cfg.block_size)
     train_len = int(len(dataset) * data_cfg.train_split)
     train_set, test_set = random_split(dataset, [train_len, len(dataset) - train_len])
