@@ -1,4 +1,5 @@
 # Setup AWS cluster with pcluster
+Refer https://www.hpcworkshops.com/04-pcluster-cli.html
 
 ## 1. Sign in to an AWS instance
 
