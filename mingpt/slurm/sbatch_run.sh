@@ -15,11 +15,11 @@ echo Node IP: $head_node_ip
 export LOGLEVEL=INFO
 
 srun torchrun \
---nnodes 4 \
+--nnodes 2 \
 --nproc_per_node 1 \
 --rdzv_id $RANDOM \
 --rdzv_backend c10d \
 --rdzv_endpoint $head_node_ip:29500 \
-/shared/distributed-pytorch/multinode_torchrun.py 50 10
+/shared/minGPT-ddp/mingpt/main.py
 
 

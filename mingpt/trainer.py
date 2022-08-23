@@ -111,6 +111,7 @@ class Trainer:
                 print(f"[GPU{self.global_rank}] Epoch {epoch} | Iter {iter} | {step_type} Loss {batch_loss:.5f}")
 
     def _save_snapshot(self, epoch):
+        # capture snapshot
         model = self.model
         raw_model = model.module if hasattr(model, "module") else model
         snapshot = Snapshot(
@@ -118,11 +119,13 @@ class Trainer:
             optimizer_state=self.optimizer.state_dict(),
             finished_epoch=epoch
         )
+        # save snapshot
         snapshot = asdict(snapshot)
         if self.config.snapshot_path.startswith("s3://"):
             upload_to_s3(snapshot, self.config.snapshot_path)
         else:
             torch.save(snapshot, self.config.snapshot_path)
+            
         print(f"Snapshot saved at epoch {epoch}")
 
     def train(self, max_epochs: int):

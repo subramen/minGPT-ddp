@@ -12,7 +12,7 @@ pip3 install "aws-parallelcluster" --upgrade --user
 ```
 pcluster configure --config config.yaml
 ```
-See config.yaml.template for an example
+See config.yaml.template for an example. Ensure you have a valid EC2 key-pair file
 
 
 ## 4. Create the cluster
@@ -27,7 +27,7 @@ pcluster list-clusters
 
 ## 5. Login to cluster headnode
 ```
-pcluster ssh --cluster-name dist-ml -i your-keyname-file
+pcluster ssh --cluster-name dist-ml -i your-keypair-file
 ```
 
 ## 6. Install dependencies
