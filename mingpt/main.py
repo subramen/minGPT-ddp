@@ -32,7 +32,7 @@ def main(cfg: DictConfig):
 
     model, optimizer, train_data, test_data = get_train_objs(gpt_cfg, opt_cfg, data_cfg)
     trainer = Trainer(trainer_cfg, model, optimizer, train_data, test_data)
-    trainer.train(trainer_cfg.max_epochs)
+    trainer.train()
 
     destroy_process_group()
 

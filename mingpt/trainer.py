@@ -128,8 +128,8 @@ class Trainer:
             
         print(f"Snapshot saved at epoch {epoch}")
 
-    def train(self, max_epochs: int):
-        for epoch in range(self.epochs_run, max_epochs):
+    def train(self):
+        for epoch in range(self.epochs_run, self.config.max_epochs):
             epoch += 1
             self._run_epoch(epoch, self.train_loader, train=True)
             if self.local_rank == 0 and epoch % self.save_every == 0:
